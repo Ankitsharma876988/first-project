@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wall Clock with Digits</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #222;
+        }
+
+        .clock {
+            width: 300px;
+            height: 300px;
+            border: 10px solid #333;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .hand {
+            position: absolute;
+            transform-origin: center bottom;
+        }
+
+        .hour {
+            height: 35px;
+            width: 6px;
+            background-color: #333;
+            top: 50px;
+            left: 147px;
+        }
+
+        .minute {
+            height: 45px;
+            width: 4px;
+            background-color: #666;
+            top: 40px;
+            left: 148px;
+        }
+
+        .second {
+            height: 50px;
+            width: 2px;
+            background-color: red;
+            top: 35px;
+            left: 149px;
+        }
+
+        .digits {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="clock" id="clock">
+        <div class="hand hour" id="hour"></div>
+        <div class="hand minute" id="minute"></div>
+        <div class="hand second" id="second"></div>
+        <div class="digits" id="digits"></div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hour = now.getHours() % 12;
+            const minute = now.getMinutes();
+            const second = now.getSeconds();
+
+            const hourDeg = (hour + minute / 60) * 360 / 12;
+            const minuteDeg = (minute + second / 60) * 360 / 60;
+            const secondDeg = (second * 360 / 60);
+
+            const hourHand = document.getElementById('hour');
+            const minuteHand = document.getElementById('minute');
+            const secondHand = document.getElementById('second');
+            const digits = document.getElementById('digits');
+
+            hourHand.style.transform = `rotate(${hourDeg}deg)`;
+            minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+            secondHand.style.transform = `rotate(${secondDeg}deg)`;
+
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            digits.textContent = timeString;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+
+        // Initial call to set the clock when the page loads
+        updateClock();
+    </script>
+</body>
+</html>
